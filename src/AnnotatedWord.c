@@ -193,8 +193,7 @@ char *annotated_word_to_string(const Annotated_word *word) {
     if (word->pos_tag != NULL) {
         sprintf(tmp, "%s{posTag=%s}", tmp, word->pos_tag);
     }
-    char* result = str_copy(result, tmp);
-    return result;
+    return clone_string(tmp);
 }
 
 /**
