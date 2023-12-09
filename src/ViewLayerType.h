@@ -11,4 +11,12 @@ enum view_layer_type{
 
 typedef enum view_layer_type View_layer_type;
 
+typedef View_layer_type *View_layer_type_ptr;
+
+int compare_view_layer_type(const View_layer_type* layer_type1, const View_layer_type* layer_type2);
+
+unsigned int hash_function_view_layer_type(const View_layer_type* layer_type, int N);
+
+View_layer_type_ptr create_view_layer_type(View_layer_type layer_type);
+
 #endif //ANNOTATEDSENTENCE_VIEWLAYERTYPE_H
