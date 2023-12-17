@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 class AnnotatedSentenceConan(ConanFile):
     name = "AnnotatedSentence-C"
     version = "1.0.0"
-    requires = ["DependencyParser-C/1.0.0", "NamedEntityRecognition-C/1.0.0", "PropBank-C/1.0.0", "FrameNet-C/1.0.0", "SentiNet-C/1.0.0"]
+    requires = ["DependencyParser-C/1.0.0", "NamedEntityRecognition-C/1.0.0", "PropBank-C/1.0.0", "FrameNet-C/1.0.0", "SentiNet-C/1.0.0", "WordNet-C/1.0.0"]
     license = "GPL License"
     author = "Olcay Taner Yildiz olcay.yildiz@ozyegin.edu.tr"
     url = "https://github.com/StarlangSoftware/AnnotatedSentence-C"

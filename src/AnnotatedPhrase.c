@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <StringUtils.h>
+#include <Memory/Memory.h>
 #include "AnnotatedPhrase.h"
 #include "AnnotatedWord.h"
 
@@ -14,7 +15,7 @@
  * @param tag Tag of the phrase. Corresponds to the shallow parse or named entity tag.
  */
 Annotated_phrase_ptr create_annotated_phrase(int word_index, const char *tag) {
-    Annotated_phrase_ptr result = malloc(sizeof(Annotated_phrase));
+    Annotated_phrase_ptr result = malloc_(sizeof(Annotated_phrase), "create_annotated_phrase");
     result->words = create_array_list();
     result->word_index = word_index;
     result->tag = str_copy(result->tag, tag);
@@ -22,7 +23,9 @@ Annotated_phrase_ptr create_annotated_phrase(int word_index, const char *tag) {
 }
 
 void free_annotated_phrase(Annotated_phrase_ptr phrase) {
-    free_array_list(phrase->words, (void (*)(void *)) free_annotated_word);
+    free_array_list(phrase->words, NULL);
+    free_(phrase->tag);
+    free_(phrase);
 }
 
 void phrase_add_word(Annotated_phrase_ptr phrase, Annotated_word_ptr word) {

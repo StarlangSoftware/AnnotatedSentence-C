@@ -6,6 +6,7 @@
 #include <string.h>
 #include <FileUtils.h>
 #include <PolarityType.h>
+#include <Memory/Memory.h>
 #include "AnnotatedWord.h"
 
 /**
@@ -55,6 +56,7 @@ Annotated_word_ptr create_annotated_word(const char *word) {
                                         Array_list_ptr values = str_split(layer_value, '$');
                                         result->universal_dependency = create_universal_dependency_relation(atoi(
                                                 array_list_get(values, 0)), array_list_get(values, 1));
+                                        free_array_list(values, free_);
                                     } else {
                                         if (strcmp(layer_type, "framenet") == 0 || strcmp(layer_type, "frameNet") == 0){
                                             result->frame_element = create_frame_element2(layer_value);
@@ -86,7 +88,7 @@ Annotated_word_ptr create_annotated_word(const char *word) {
         free_string_ptr(st1);
         free_string_ptr(st2);
     }
-    free_array_list(split_layers, free);
+    free_array_list(split_layers, free_);
     return result;
 }
 
@@ -111,20 +113,49 @@ Language get_language_from_string(const char *language) {
 }
 
 Annotated_word_ptr create_annotated_word2() {
-    Annotated_word_ptr result = malloc(sizeof(Annotated_word));
+    Annotated_word_ptr result = malloc_(sizeof(Annotated_word), "create_annotated_word2");
     result->name = NULL;
     result->parse = NULL;
     result->metamorphic_parse = NULL;
+    result->argument = NULL;
+    result->frame_element = NULL;
+    result->slot = NULL;
+    result->universal_dependency = NULL;
+    result->pos_tag = NULL;
+    result->shallow_parse = NULL;
+    result->ccg = NULL;
     result->semantic = NULL;
     result->named_entity_type = NER_NONE;
-    result->frame_element = NULL;
     result->polarity = POLARITY_NEUTRAL;
-    result->shallow_parse = NULL;
-    result->slot = NULL;
-    result->ccg = NULL;
-    result->pos_tag = NULL;
     result->language = TURKISH;
     return result;
+}
+
+void free_annotated_word(Annotated_word_ptr word) {
+    free_(word->name);
+    if (word->parse != NULL){
+        free_morphological_parse(word->parse);
+    }
+    if (word->metamorphic_parse != NULL){
+        free_metamorphic_parse(word->metamorphic_parse);
+    }
+    if (word->argument != NULL){
+        free_argument(word->argument);
+    }
+    if (word->frame_element != NULL){
+        free_frame_element(word->frame_element);
+    }
+    if (word->slot != NULL){
+        free_slot(word->slot);
+    }
+    if (word->universal_dependency != NULL){
+        free_universal_dependency_relation(word->universal_dependency);
+    }
+    free_(word->pos_tag);
+    free_(word->shallow_parse);
+    free_(word->ccg);
+    free_(word->semantic);
+    free_(word);
 }
 
 /**
@@ -148,12 +179,12 @@ char *annotated_word_to_string(const Annotated_word *word) {
     if (word->parse != NULL){
         char* s = morphological_parse_to_string(word->parse);
         sprintf(tmp, "%s{morphologicalAnalysis=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->metamorphic_parse != NULL){
         char* s = metamorphic_parse_to_string(word->metamorphic_parse);
         sprintf(tmp, "%s{metaMorphemes=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->semantic != NULL){
         sprintf(tmp, "%s{semantics=%s}", tmp, word->semantic);
@@ -164,12 +195,12 @@ char *annotated_word_to_string(const Annotated_word *word) {
     if (word->argument != NULL){
         char* s = argument_to_string(word->argument);
         sprintf(tmp, "%s{propbank=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->frame_element != NULL){
         char* s = frame_element_to_string(word->frame_element);
         sprintf(tmp, "%s{framenet=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->shallow_parse != NULL){
         sprintf(tmp, "%s{shallowParse=%s}", tmp, word->shallow_parse);
@@ -177,12 +208,12 @@ char *annotated_word_to_string(const Annotated_word *word) {
     if (word->universal_dependency != NULL){
         char* s = universal_dependency_relation_to_string(word->universal_dependency);
         sprintf(tmp, "%s{universalDependency=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->slot != NULL){
         char* s = slot_to_string(word->slot);
         sprintf(tmp, "%s{slot=%s}", tmp, s);
-        free(s);
+        free_(s);
     }
     if (word->polarity != POLARITY_NEUTRAL){
         sprintf(tmp, "%s{polarity=%s}", tmp, polarity_to_string(word->polarity));
@@ -230,10 +261,10 @@ Annotated_word_ptr create_annotated_word5(const char *name, Fsm_parse_ptr parse)
     result->name = str_copy(result->name, name);
     char* st = fsm_parse_to_string(parse);
     result->parse = create_morphological_parse(st);
-    free(st);
+    free_(st);
     st = get_with_list(parse);
     result->metamorphic_parse = create_metamorphic_parse(st);
-    free(st);
+    free_(st);
     return result;
 }
 
@@ -297,30 +328,6 @@ char *get_layer_info(const Annotated_word *word, View_layer_type view_layer_type
             return word->pos_tag;
     }
     return NULL;
-}
-
-void free_annotated_word(Annotated_word_ptr word) {
-    free(word->name);
-    if (word->parse != NULL){
-        free_morphological_parse(word->parse);
-    }
-    if (word->metamorphic_parse != NULL){
-        free_metamorphic_parse(word->metamorphic_parse);
-    }
-    if (word->argument != NULL){
-        free_argument(word->argument);
-    }
-    if (word->frame_element != NULL){
-        free_frame_element(word->frame_element);
-    }
-    if (word->slot != NULL){
-        free_slot(word->slot);
-    }
-    free(word->pos_tag);
-    free(word->shallow_parse);
-    free(word->ccg);
-    free(word->semantic);
-    free(word);
 }
 
 int compare_annotated_word(const Annotated_word *word1, const Annotated_word *word2) {

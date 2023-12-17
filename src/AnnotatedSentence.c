@@ -4,11 +4,11 @@
 
 #include <FileUtils.h>
 #include <string.h>
-#include <stdlib.h>
 #include "AnnotatedSentence.h"
 #include "AnnotatedWord.h"
 #include "AnnotatedPhrase.h"
 #include <FrameNet.h>
+#include <Memory/Memory.h>
 
 /**
  * Reads an annotated sentence from a text file.
@@ -23,7 +23,7 @@ Sentence_ptr create_annotated_sentence(FILE *input_file) {
 
 void free_annotated_sentence(Sentence_ptr sentence) {
     free_array_list(sentence->words, (void (*)(void *)) free_annotated_word);
-    free(sentence);
+    free_(sentence);
 }
 
 /**
@@ -36,6 +36,7 @@ Sentence_ptr create_annotated_sentence2(const char *string) {
     for (int i = 0; i < word_array->size; i++){
         array_list_add(sentence->words, create_annotated_word(array_list_get(word_array, i)));
     }
+    free_array_list(word_array, free_);
     return sentence;
 }
 
@@ -74,12 +75,12 @@ bool update_connected_predicate(Sentence_ptr sentence, const char *previous_id, 
     for (int i = 0; i < sentence->words->size; i++){
         Annotated_word_ptr word = array_list_get(sentence->words, i);
         if (word->argument != NULL && word->argument->id != NULL && strcmp(word->argument->id, previous_id) == 0){
-            free(word->argument->id);
+            free_(word->argument->id);
             word->argument->id = str_copy(word->argument->id, current_id);
             modified = true;
         }
         if (word->frame_element != NULL && word->frame_element->id != NULL && strcmp(word->frame_element->id, previous_id) == 0){
-            free(word->frame_element->id);
+            free_(word->frame_element->id);
             word->frame_element->id = str_copy(word->frame_element->id, current_id);
             modified = true;
         }
@@ -190,17 +191,29 @@ char *get_predicate(Sentence_ptr sentence, int index) {
         }
         for (int i = index; i >= 0; i--) {
             Morphological_parse_ptr parse = array_list_get(parse_list, i);
-            if (parse != NULL && get_root_pos(parse) != NULL && get_pos(parse) != NULL && strcmp(get_root_pos(parse), "VERB") == 0 && strcmp(get_pos(parse), "VERB") == 0){
+            char* root_pos = get_root_pos(parse);
+            char* pos = get_pos(parse);
+            if (parse != NULL && root_pos != NULL && pos != NULL && strcmp(root_pos, "VERB") == 0 && strcmp(pos, "VERB") == 0){
+                free_(root_pos);
+                free_(pos);
                 count1 = index - i;
                 break;
             }
+            free_(root_pos);
+            free_(pos);
         }
         for (int i = index; i < sentence->words->size - index; i++) {
             Morphological_parse_ptr parse = array_list_get(parse_list, i);
-            if (parse != NULL && get_root_pos(parse) != NULL && get_pos(parse) != NULL && strcmp(get_root_pos(parse), "VERB") == 0 && strcmp(get_pos(parse), "VERB") == 0){
+            char* root_pos = get_root_pos(parse);
+            char* pos = get_pos(parse);
+            if (parse != NULL && root_pos != NULL && pos != NULL && strcmp(root_pos, "VERB") == 0 && strcmp(pos, "VERB") == 0){
+                free_(root_pos);
+                free_(pos);
                 count2 = i - index;
                 break;
             }
+            free_(root_pos);
+            free_(pos);
         }
         if (count1 > count2){
             data = ((Annotated_word_ptr) array_list_get(word_list, count1))->name;
@@ -209,6 +222,8 @@ char *get_predicate(Sentence_ptr sentence, int index) {
             data = ((Annotated_word_ptr) array_list_get(word_list, count2))->name;
         }
     }
+    free_array_list(word_list, NULL);
+    free_array_list(parse_list, NULL);
     return data;
 }
 
@@ -236,7 +251,7 @@ char *to_stems(Sentence_ptr sentence) {
                 sprintf(tmp, "%s %s", tmp, annotatedWord->name);
             }
         }
-        char* result = malloc((strlen(tmp) + 1) * sizeof(char));
+        char* result = malloc_((strlen(tmp) + 1) * sizeof(char), "to_stems");
         strcpy(result, tmp);
         return result;
     } else {

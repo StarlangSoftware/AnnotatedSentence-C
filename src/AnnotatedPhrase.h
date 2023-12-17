@@ -20,7 +20,7 @@ typedef Annotated_phrase *Annotated_phrase_ptr;
 
 Annotated_phrase_ptr create_annotated_phrase(int word_index, const char* tag);
 
-void free_annotated_phrase(Annotated_phrase_ptr phrase);
+void free_annotated_phrase(Annotated_phrase* phrase);
 
 void phrase_add_word(Annotated_phrase_ptr phrase, Annotated_word_ptr word);
 
