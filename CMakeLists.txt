@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION 3.23)
-project(AnnotatedSentence C)
-
+project(AnnotatedSentence)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_FLAGS "-O3")
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+find_package(dependency_parser_c REQUIRED)
+find_package(named_entity_recognition_c REQUIRED)
+find_package(prop_bank_c REQUIRED)
+find_package(frame_net_c REQUIRED)
+find_package(senti_net_c REQUIRED)
+find_package(word_net_c REQUIRED)
 
 add_library(AnnotatedSentence src/Language.h src/ViewLayerType.h src/AnnotatedWord.c src/AnnotatedWord.h src/AnnotatedPhrase.c src/AnnotatedPhrase.h src/AnnotatedSentence.c src/AnnotatedSentence.h src/AnnotatedCorpus.c src/AnnotatedCorpus.h src/ViewLayerType.c)
-target_link_libraries(AnnotatedSentence ${CONAN_LIBS})
+target_link_libraries(AnnotatedSentence dependency_parser_c::dependency_parser_c named_entity_recognition_c::named_entity_recognition_c prop_bank_c::prop_bank_c frame_net_c::frame_net_c senti_net_c::senti_net_c word_net_c::word_net_c)
 add_executable(AnnotatedSentenceTest src/Language.h src/ViewLayerType.h src/AnnotatedWord.c src/AnnotatedWord.h src/AnnotatedPhrase.c src/AnnotatedPhrase.h src/AnnotatedSentence.c src/AnnotatedSentence.h src/AnnotatedCorpus.c src/AnnotatedCorpus.h Test/AnnotatedSentenceTest.c src/ViewLayerType.c)
-target_link_libraries(AnnotatedSentenceTest ${CONAN_LIBS})
+target_link_libraries(AnnotatedSentenceTest dependency_parser_c::dependency_parser_c named_entity_recognition_c::named_entity_recognition_c prop_bank_c::prop_bank_c frame_net_c::frame_net_c senti_net_c::senti_net_c word_net_c::word_net_c)
