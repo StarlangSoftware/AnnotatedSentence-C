@@ -7,6 +7,13 @@
 #include "AnnotatedCorpus.h"
 #include "AnnotatedSentence.h"
 
+/**
+ * Compares the corpus with the given corpus and returns a parser evaluation score for this comparison. The result
+ * is calculated by summing up the parser evaluation scores of sentence by sentence dependency relation comparisons.
+ * @param corpus1 First corpus to be compared.
+ * @param corpus2 Second corpus to be compared.
+ * @return A parser evaluation score object.
+ */
 Parser_evaluation_score_ptr compare_corpus_parses(Corpus_ptr corpus1, Corpus_ptr corpus2) {
     Parser_evaluation_score_ptr score = create_parser_evaluation_score2();
     for (int i = 0; i < corpus1->sentences->size; i++){
@@ -50,6 +57,10 @@ Corpus_ptr create_annotated_corpus(const char *folder) {
     return corpus;
 }
 
+/**
+ * Frees memory allocated to the AnnotatedCorpus object. Deallocates memory for word_list hash map, paragraphs and
+ * sentences array lists.
+ */
 void free_annotated_corpus(Corpus_ptr corpus) {
     free_counter_hash_map(corpus->word_list);
     free_array_list(corpus->paragraphs, NULL);

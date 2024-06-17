@@ -112,6 +112,10 @@ Language get_language_from_string(const char *language) {
     return TURKISH;
 }
 
+/**
+ * Empty constructor for AnnotatedWord.
+ * @return Allocated new annotated word.
+ */
 Annotated_word_ptr create_annotated_word2() {
     Annotated_word_ptr result = malloc_(sizeof(Annotated_word), "create_annotated_word2");
     result->name = NULL;
@@ -131,6 +135,10 @@ Annotated_word_ptr create_annotated_word2() {
     return result;
 }
 
+/**
+ * Frees memory to be dealloacated for a word.
+ * @param word Word to be deallocated.
+ */
 void free_annotated_word(Annotated_word_ptr word) {
     free_(word->name);
     if (word->parse != NULL){
@@ -330,6 +338,12 @@ char *get_layer_info(const Annotated_word *word, View_layer_type view_layer_type
     return NULL;
 }
 
+/**
+ * Comparator method for twp words.
+ * @param word1 First word to compare.
+ * @param word2 Second word to compare.
+ * @return 0 if they are equal. -1 if the first comes before the second one in lexicographical order. 1, otherwise.
+ */
 int compare_annotated_word(const Annotated_word *word1, const Annotated_word *word2) {
     return compare_string(word1->name, word2->name);
 }

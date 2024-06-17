@@ -21,6 +21,10 @@ Sentence_ptr create_annotated_sentence(FILE *input_file) {
     return create_annotated_sentence2(line);
 }
 
+/**
+ * Frees memory allocated to a sentence object.
+ * @param sentence Sentence to be dellocated.
+ */
 void free_annotated_sentence(Sentence_ptr sentence) {
     free_array_list(sentence->words, (void (*)(void *)) free_annotated_word);
     free_(sentence);
@@ -259,6 +263,12 @@ char *to_stems(Sentence_ptr sentence) {
     }
 }
 
+/**
+ * Compares the sentence with the given sentence and returns a parser evaluation score for this comparison. The result
+ * is calculated by summing up the parser evaluation scores of word by word dpendency relation comparisons.
+ * @param sentence Sentence to be compared.
+ * @return A parser evaluation score object.
+ */
 Parser_evaluation_score_ptr compare_sentence_parses(Sentence_ptr sentence1, Sentence_ptr sentence2) {
     Parser_evaluation_score_ptr score = create_parser_evaluation_score2();
     for (int i = 0; i < sentence1->words->size; i++){

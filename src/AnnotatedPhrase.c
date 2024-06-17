@@ -22,12 +22,21 @@ Annotated_phrase_ptr create_annotated_phrase(int word_index, const char *tag) {
     return result;
 }
 
+/**
+ * Frees memory allocated to the phrase. Deallocates memory for words array list.
+ * @param phrase Phrase to be dealloacated.
+ */
 void free_annotated_phrase(Annotated_phrase_ptr phrase) {
     free_array_list(phrase->words, NULL);
     free_(phrase->tag);
     free_(phrase);
 }
 
+/**
+ * Adds a new word to the given phrase.
+ * @param phrase Phrase to which a new word to be added.
+ * @param word Word to be added.
+ */
 void phrase_add_word(Annotated_phrase_ptr phrase, Annotated_word_ptr word) {
     array_list_add(phrase->words, word);
 }
