@@ -8,8 +8,8 @@
 #include <MorphologicalParse.h>
 #include <MetamorphicParse.h>
 #include <NamedEntityType.h>
-#include <Argument.h>
-#include <FrameElement.h>
+#include <ArgumentList.h>
+#include <FrameElementList.h>
 #include <PolarityType.h>
 #include <Slot.h>
 #include <Universal/UniversalDependencyRelation.h>
@@ -23,8 +23,8 @@ struct annotated_word{
     Metamorphic_parse_ptr metamorphic_parse;
     char* semantic;
     Named_entity_type named_entity_type;
-    Argument_ptr argument;
-    Frame_element_ptr frame_element;
+    Argument_list_ptr argument_list;
+    Frame_element_list_ptr frame_element_list;
     Polarity_type polarity;
     char* shallow_parse;
     Slot_ptr slot;

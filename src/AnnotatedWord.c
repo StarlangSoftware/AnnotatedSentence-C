@@ -47,7 +47,7 @@ Annotated_word_ptr create_annotated_word(const char *word) {
                             result->named_entity_type = get_named_entity_type(layer_value);
                         } else {
                             if (strcmp(layer_type, "propbank") == 0 || strcmp(layer_type, "propBank") == 0){
-                                result->argument = create_argument2(layer_value);
+                                result->argument_list = create_argument_list(layer_value);
                             } else {
                                 if (strcmp(layer_type, "shallowParse") == 0){
                                     result->shallow_parse = str_copy(result->shallow_parse, layer_value);
@@ -59,7 +59,7 @@ Annotated_word_ptr create_annotated_word(const char *word) {
                                         free_array_list(values, free_);
                                     } else {
                                         if (strcmp(layer_type, "framenet") == 0 || strcmp(layer_type, "frameNet") == 0){
-                                            result->frame_element = create_frame_element2(layer_value);
+                                            result->frame_element_list = create_frame_element_list(layer_value);
                                         } else {
                                             if (strcmp(layer_type, "slot") == 0){
                                                 result->slot = create_slot2(layer_value);
@@ -121,8 +121,8 @@ Annotated_word_ptr create_annotated_word2() {
     result->name = NULL;
     result->parse = NULL;
     result->metamorphic_parse = NULL;
-    result->argument = NULL;
-    result->frame_element = NULL;
+    result->argument_list = NULL;
+    result->frame_element_list = NULL;
     result->slot = NULL;
     result->universal_dependency = NULL;
     result->pos_tag = NULL;
@@ -147,11 +147,11 @@ void free_annotated_word(Annotated_word_ptr word) {
     if (word->metamorphic_parse != NULL){
         free_metamorphic_parse(word->metamorphic_parse);
     }
-    if (word->argument != NULL){
-        free_argument(word->argument);
+    if (word->argument_list != NULL){
+        free_argument_list(word->argument_list);
     }
-    if (word->frame_element != NULL){
-        free_frame_element(word->frame_element);
+    if (word->frame_element_list != NULL){
+        free_frame_element_list(word->frame_element_list);
     }
     if (word->slot != NULL){
         free_slot(word->slot);
@@ -200,13 +200,13 @@ char *annotated_word_to_string(const Annotated_word *word) {
     if (word->named_entity_type != NER_NONE){
         sprintf(tmp, "%s{namedEntity=%s}", tmp, named_entity_type_to_string(word->named_entity_type));
     }
-    if (word->argument != NULL){
-        char* s = argument_to_string(word->argument);
+    if (word->argument_list != NULL){
+        char* s = argument_list_to_string(word->argument_list);
         sprintf(tmp, "%s{propbank=%s}", tmp, s);
         free_(s);
     }
-    if (word->frame_element != NULL){
-        char* s = frame_element_to_string(word->frame_element);
+    if (word->frame_element_list != NULL){
+        char* s = frame_element_list_to_string(word->frame_element_list);
         sprintf(tmp, "%s{framenet=%s}", tmp, s);
         free_(s);
     }
@@ -278,7 +278,8 @@ Annotated_word_ptr create_annotated_word5(const char *name, Fsm_parse_ptr parse)
 
 /**
  * Returns the value of a given layer.
- * @param viewLayerType Layer for which the value questioned.
+ * @param word Annotated word
+ * @param view_layer_type Layer for which the value questioned.
  * @return The value of the given layer.
  */
 char *get_layer_info(const Annotated_word *word, View_layer_type view_layer_type) {
@@ -306,13 +307,13 @@ char *get_layer_info(const Annotated_word *word, View_layer_type view_layer_type
         default:
             return word->name;
         case PROPBANK:
-            if (word->argument != NULL){
-                return argument_to_string(word->argument);
+            if (word->argument_list != NULL){
+                return argument_list_to_string(word->argument_list);
             }
             break;
         case FRAMENET:
-            if (word->frame_element != NULL){
-                return frame_element_to_string(word->frame_element);
+            if (word->frame_element_list != NULL){
+                return frame_element_list_to_string(word->frame_element_list);
             }
             break;
         case DEPENDENCY:

@@ -12,7 +12,7 @@
 
 /**
  * Reads an annotated sentence from a text file.
- * @param inputFile File containing the annotated sentence.
+ * @param input_file File containing the annotated sentence.
  */
 Sentence_ptr create_annotated_sentence(FILE *input_file) {
     char line[MAX_LINE_LENGTH];
@@ -32,7 +32,7 @@ void free_annotated_sentence(Sentence_ptr sentence) {
 
 /**
  * Converts a simple sentence to an annotated sentence
- * @param sentence Simple sentence
+ * @param string Simple sentence
  */
 Sentence_ptr create_annotated_sentence2(const char *string) {
     Sentence_ptr sentence = create_sentence();
@@ -52,8 +52,10 @@ Sentence_ptr create_annotated_sentence2(const char *string) {
 bool contains_predicate(Sentence_ptr sentence) {
     for (int i = 0; i < sentence->words->size; i++){
         Annotated_word_ptr word = array_list_get(sentence->words, i);
-        if (word->argument != NULL && strcmp(word->argument->argument_type, "PREDICATE") == 0){
-            return true;
+        if (word->argument_list != NULL){
+            if (contains_predicate_in_argument_list(word->argument_list)) {
+                return true;
+            }
         }
     }
     return false;
@@ -67,8 +69,10 @@ bool contains_predicate(Sentence_ptr sentence) {
 bool contains_frame_predicate(Sentence_ptr sentence) {
     for (int i = 0; i < sentence->words->size; i++){
         Annotated_word_ptr word = array_list_get(sentence->words, i);
-        if (word->frame_element != NULL && strcmp(word->frame_element->frame_element_type, "PREDICATE") == 0){
-            return true;
+        if (word->frame_element_list != NULL){
+            if (contains_predicate_in_frame_element_list(word->frame_element_list)) {
+                return true;
+            }
         }
     }
     return false;
@@ -78,15 +82,19 @@ bool update_connected_predicate(Sentence_ptr sentence, const char *previous_id, 
     bool modified = false;
     for (int i = 0; i < sentence->words->size; i++){
         Annotated_word_ptr word = array_list_get(sentence->words, i);
-        if (word->argument != NULL && word->argument->id != NULL && strcmp(word->argument->id, previous_id) == 0){
-            free_(word->argument->id);
-            word->argument->id = str_copy(word->argument->id, current_id);
-            modified = true;
+        Argument_list_ptr argument_list = word->argument_list;
+        if (argument_list != NULL){
+            if (contains_predicate_with_id_in_argument_list(argument_list, previous_id)) {
+                update_connected_id_in_argument_list(argument_list, previous_id, current_id);
+                modified = true;
+            }
         }
-        if (word->frame_element != NULL && word->frame_element->id != NULL && strcmp(word->frame_element->id, previous_id) == 0){
-            free_(word->frame_element->id);
-            word->frame_element->id = str_copy(word->frame_element->id, current_id);
-            modified = true;
+        Frame_element_list_ptr frame_element_list = word->frame_element_list;
+        if (frame_element_list != NULL){
+            if (contains_predicate_with_id_in_frame_element_list(frame_element_list, previous_id)) {
+                update_connected_id_in_frame_element_list(frame_element_list, previous_id, current_id);
+                modified = true;
+            }
         }
     }
     return modified;
