@@ -47,6 +47,7 @@ Sentence_ptr create_annotated_sentence2(const char *string) {
 /**
  * The method checks all words in the sentence and returns true if at least one of the words is annotated with
  * PREDICATE tag.
+ * @param sentence Sentence object.
  * @return True if at least one of the words is annotated with PREDICATE tag; false otherwise.
  */
 bool contains_predicate(Sentence_ptr sentence) {
@@ -64,6 +65,7 @@ bool contains_predicate(Sentence_ptr sentence) {
 /**
  * The method checks all words in the sentence and returns true if at least one of the words is annotated with
  * PREDICATE tag.
+ * @param sentence Sentence object.
  * @return True if at least one of the words is annotated with PREDICATE tag; false otherwise.
  */
 bool contains_frame_predicate(Sentence_ptr sentence) {
@@ -102,6 +104,7 @@ bool update_connected_predicate(Sentence_ptr sentence, const char *previous_id, 
 
 /**
  * The method constructs all possible shallow parse groups of a sentence.
+ * @param sentence Sentence object.
  * @return Shallow parse groups of a sentence.
  */
 Array_list_ptr get_shallow_parse_groups(Sentence_ptr sentence) {
@@ -130,6 +133,7 @@ Array_list_ptr get_shallow_parse_groups(Sentence_ptr sentence) {
  * 1. Verb
  * 2. Its semantic tag is assigned
  * 3. A frameset exists for that semantic tag
+ * @param sentence Sentence object.
  * @param framesetList Frameset list that contains all frames for Turkish
  * @return An array of words, which are verbs, semantic tags assigned, and framesetlist assigned for that tag.
  */
@@ -160,7 +164,8 @@ Array_list_ptr predicate_candidates(Sentence_ptr sentence, Frameset_list_ptr fra
  * 1. Verb
  * 2. Its semantic tag is assigned
  * 3. A frameset exists for that semantic tag
- * @param framesetList Frameset list that contains all frames for Turkish
+ * @param sentence Sentence object.
+ * @param frameNet Frameset list that contains all frames for Turkish
  * @return An array of words, which are verbs, semantic tags assigned, and framesetlist assigned for that tag.
  */
 Array_list_ptr predicate_frame_candidates(Sentence_ptr sentence, Frame_net_ptr frameNet) {
@@ -187,6 +192,7 @@ Array_list_ptr predicate_frame_candidates(Sentence_ptr sentence, Frame_net_ptr f
 
 /**
  * Returns the i'th predicate in the sentence.
+ * @param sentence Sentence object.
  * @param index Predicate index
  * @return The predicate with index index in the sentence.
  */
@@ -243,6 +249,7 @@ char *get_predicate(Sentence_ptr sentence, int index) {
  * The toStems method returns an accumulated string of each word's stems in words ArrayList.
  * If the parse of the word does not exist, the method adds the surfaceform to the resulting string.
  *
+ * @param sentence Sentence object.
  * @return String result which has all the stems of each item in words ArrayList.
  */
 char *to_stems(Sentence_ptr sentence) {
@@ -274,7 +281,8 @@ char *to_stems(Sentence_ptr sentence) {
 /**
  * Compares the sentence with the given sentence and returns a parser evaluation score for this comparison. The result
  * is calculated by summing up the parser evaluation scores of word by word dpendency relation comparisons.
- * @param sentence Sentence to be compared.
+ * @param sentence1 First sentence to be compared.
+ * @param sentence2 Second sentence to be compared.
  * @return A parser evaluation score object.
  */
 Parser_evaluation_score_ptr compare_sentence_parses(Sentence_ptr sentence1, Sentence_ptr sentence2) {

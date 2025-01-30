@@ -11,7 +11,7 @@
 /**
  * Constructor for AnnotatedPhrase. AnnotatedPhrase stores information about phrases such as
  * Shallow Parse phrases or named entity phrases.
- * @param wordIndex Starting index of the first word in the phrase w.r.t. original sentence the phrase occurs.
+ * @param word_index Starting index of the first word in the phrase w.r.t. original sentence the phrase occurs.
  * @param tag Tag of the phrase. Corresponds to the shallow parse or named entity tag.
  */
 Annotated_phrase_ptr create_annotated_phrase(int word_index, const char *tag) {

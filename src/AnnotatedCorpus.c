@@ -29,7 +29,6 @@ Parser_evaluation_score_ptr compare_corpus_parses(Corpus_ptr corpus1, Corpus_ptr
  * name satisfying the given pattern inside the given folder. For each file inside that folder, the constructor
  * creates an AnnotatedSentence and puts in inside the list parseTrees.
  * @param folder Folder where all sentences reside.
- * @param fileList File list containing all sentences.
  */
 Corpus_ptr create_annotated_corpus(const char *folder) {
     DIR *directory_ptr;
