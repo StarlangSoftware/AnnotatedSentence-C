@@ -253,7 +253,7 @@ char *get_predicate(Sentence_ptr sentence, int index) {
  * @return String result which has all the stems of each item in words ArrayList.
  */
 char *to_stems(Sentence_ptr sentence) {
-    char tmp[MAX_WORD_LENGTH];
+    char tmp[MAX_WORD_LENGTH], tmp1[MAX_WORD_LENGTH];
     Annotated_word_ptr annotatedWord;
     if (sentence->words->size != 0) {
         annotatedWord = array_list_get(sentence->words, 0);
@@ -265,9 +265,11 @@ char *to_stems(Sentence_ptr sentence) {
         for (int i = 1; i < sentence->words->size; i++) {
             annotatedWord = array_list_get(sentence->words, i);
             if (annotatedWord->parse != NULL){
-                sprintf(tmp, "%s %s", tmp, annotatedWord->parse->root);
+                sprintf(tmp1, "%s %s", tmp, annotatedWord->parse->root);
+                strcpy(tmp, tmp1);
             } else {
-                sprintf(tmp, "%s %s", tmp, annotatedWord->name);
+                sprintf(tmp1, "%s %s", tmp, annotatedWord->name);
+                strcpy(tmp, tmp1);
             }
         }
         char* result = malloc_((strlen(tmp) + 1) * sizeof(char), "to_stems");
