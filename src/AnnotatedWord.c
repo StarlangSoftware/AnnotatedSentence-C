@@ -172,7 +172,7 @@ void free_annotated_word(Annotated_word_ptr word) {
  * @return String form of the AnnotatedWord.
  */
 char *annotated_word_to_string(const Annotated_word *word) {
-    char tmp[MAX_WORD_LENGTH];
+    char tmp[MAX_WORD_LENGTH], tmp1[MAX_WORD_LENGTH];
     switch (word->language) {
         case TURKISH:
             sprintf(tmp, "{turkish=%s}", word->name);
@@ -186,51 +186,63 @@ char *annotated_word_to_string(const Annotated_word *word) {
     }
     if (word->parse != NULL){
         char* s = morphological_parse_to_string(word->parse);
-        sprintf(tmp, "%s{morphologicalAnalysis=%s}", tmp, s);
+        sprintf(tmp1, "%s{morphologicalAnalysis=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->metamorphic_parse != NULL){
         char* s = metamorphic_parse_to_string(word->metamorphic_parse);
-        sprintf(tmp, "%s{metaMorphemes=%s}", tmp, s);
+        sprintf(tmp1, "%s{metaMorphemes=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->semantic != NULL){
-        sprintf(tmp, "%s{semantics=%s}", tmp, word->semantic);
+        sprintf(tmp1, "%s{semantics=%s}", tmp, word->semantic);
+        strcpy(tmp, tmp1);
     }
     if (word->named_entity_type != NER_NONE){
-        sprintf(tmp, "%s{namedEntity=%s}", tmp, named_entity_type_to_string(word->named_entity_type));
+        sprintf(tmp1, "%s{namedEntity=%s}", tmp, named_entity_type_to_string(word->named_entity_type));
+        strcpy(tmp, tmp1);
     }
     if (word->argument_list != NULL){
         char* s = argument_list_to_string(word->argument_list);
-        sprintf(tmp, "%s{propbank=%s}", tmp, s);
+        sprintf(tmp1, "%s{propbank=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->frame_element_list != NULL){
         char* s = frame_element_list_to_string(word->frame_element_list);
-        sprintf(tmp, "%s{framenet=%s}", tmp, s);
+        sprintf(tmp1, "%s{framenet=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->shallow_parse != NULL){
-        sprintf(tmp, "%s{shallowParse=%s}", tmp, word->shallow_parse);
+        sprintf(tmp1, "%s{shallowParse=%s}", tmp, word->shallow_parse);
+        strcpy(tmp, tmp1);
     }
     if (word->universal_dependency != NULL){
         char* s = universal_dependency_relation_to_string(word->universal_dependency);
-        sprintf(tmp, "%s{universalDependency=%s}", tmp, s);
+        sprintf(tmp1, "%s{universalDependency=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->slot != NULL){
         char* s = slot_to_string(word->slot);
-        sprintf(tmp, "%s{slot=%s}", tmp, s);
+        sprintf(tmp1, "%s{slot=%s}", tmp, s);
+        strcpy(tmp, tmp1);
         free_(s);
     }
     if (word->polarity != POLARITY_NEUTRAL){
-        sprintf(tmp, "%s{polarity=%s}", tmp, polarity_to_string(word->polarity));
+        sprintf(tmp1, "%s{polarity=%s}", tmp, polarity_to_string(word->polarity));
+        strcpy(tmp, tmp1);
     }
     if (word->ccg != NULL) {
-        sprintf(tmp, "%s{ccg=%s}", tmp, word->ccg);
+        sprintf(tmp1, "%s{ccg=%s}", tmp, word->ccg);
+        strcpy(tmp, tmp1);
     }
     if (word->pos_tag != NULL) {
-        sprintf(tmp, "%s{posTag=%s}", tmp, word->pos_tag);
+        sprintf(tmp1, "%s{posTag=%s}", tmp, word->pos_tag);
+        strcpy(tmp, tmp1);
     }
     return clone_string(tmp);
 }
