@@ -117,7 +117,7 @@ Language get_language_from_string(const char *language) {
  * @return Allocated new annotated word.
  */
 Annotated_word_ptr create_annotated_word2() {
-    Annotated_word_ptr result = malloc_(sizeof(Annotated_word), "create_annotated_word2");
+    Annotated_word_ptr result = malloc_(sizeof(Annotated_word));
     result->name = NULL;
     result->parse = NULL;
     result->metamorphic_parse = NULL;

@@ -15,7 +15,7 @@
  * @param tag Tag of the phrase. Corresponds to the shallow parse or named entity tag.
  */
 Annotated_phrase_ptr create_annotated_phrase(int word_index, const char *tag) {
-    Annotated_phrase_ptr result = malloc_(sizeof(Annotated_phrase), "create_annotated_phrase");
+    Annotated_phrase_ptr result = malloc_(sizeof(Annotated_phrase));
     result->words = create_array_list();
     result->word_index = word_index;
     result->tag = str_copy(result->tag, tag);

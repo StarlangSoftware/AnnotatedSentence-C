@@ -9,6 +9,7 @@
 #include "../src/AnnotatedPhrase.h"
 
 int main(){
+    start_large_memory_check();
     int sizes[10] = {4, 5, 3, 5, 5, 5, 6, 5, 5, 3};
     char* stems[10] = {"devasa ölçek yeni kanun kullan karmaşık ve çetrefil dil kavga bulan .",
                        "gelir art usul komite gel salı gün kanun tasarı hakkında bir duruşma yap .",
@@ -45,4 +46,5 @@ int main(){
         free_array_list(groups, (void*)free_annotated_phrase);
     }
     free_annotated_corpus(corpus);
+    end_memory_check();
 }

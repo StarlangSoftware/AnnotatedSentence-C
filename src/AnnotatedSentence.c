@@ -272,7 +272,7 @@ char *to_stems(Sentence_ptr sentence) {
                 strcpy(tmp, tmp1);
             }
         }
-        char* result = malloc_((strlen(tmp) + 1) * sizeof(char), "to_stems");
+        char* result = malloc_((strlen(tmp) + 1) * sizeof(char));
         strcpy(result, tmp);
         return result;
     } else {

@@ -13,7 +13,7 @@ unsigned int hash_function_view_layer_type(const View_layer_type *layer_type, in
 }
 
 View_layer_type_ptr create_view_layer_type(View_layer_type layer_type) {
-    View_layer_type_ptr result = malloc_(sizeof(View_layer_type), "create_view_layer_type");
+    View_layer_type_ptr result = malloc_(sizeof(View_layer_type));
     *result = layer_type;
     return result;
 }

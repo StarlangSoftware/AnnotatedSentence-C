@@ -38,7 +38,7 @@ Corpus_ptr create_annotated_corpus(const char *folder) {
     directory_ptr = opendir(folder);
     while ((file_entry = readdir(directory_ptr)) != NULL){
         if (ends_with(file_entry->d_name, "dev") || ends_with(file_entry->d_name, "train") || ends_with(file_entry->d_name, "test")){
-            char* file_name = malloc_(strlen(folder) + strlen(file_entry->d_name) + 2, "create_annotated_corpus");
+            char* file_name = malloc_(strlen(folder) + strlen(file_entry->d_name) + 2);
             sprintf(file_name, "%s/%s", folder, file_entry->d_name);
             array_list_add(files, file_name);
         }
