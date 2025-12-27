@@ -258,14 +258,14 @@ char *to_stems(Sentence_ptr sentence) {
     if (sentence->words->size != 0) {
         annotatedWord = array_list_get(sentence->words, 0);
         if (annotatedWord->parse != NULL){
-            sprintf(tmp, "%s", annotatedWord->parse->root);
+            sprintf(tmp, "%s", annotatedWord->parse->root->name);
         } else {
             sprintf(tmp, "%s", annotatedWord->name);
         }
         for (int i = 1; i < sentence->words->size; i++) {
             annotatedWord = array_list_get(sentence->words, i);
             if (annotatedWord->parse != NULL){
-                sprintf(tmp1, "%s %s", tmp, annotatedWord->parse->root);
+                sprintf(tmp1, "%s %s", tmp, annotatedWord->parse->root->name);
                 strcpy(tmp, tmp1);
             } else {
                 sprintf(tmp1, "%s %s", tmp, annotatedWord->name);
